@@ -11,11 +11,11 @@
              x:DataType="aviavms:FlightsViewModel"
              x:Class="AviaExplorer.Views.Pages.OriginSelectionPage">
     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
-        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
+        <RefreshView Command="{Binding GetChoicesCommand}">
             <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.Header>
                     <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
-                        BackgroundColor="Transparent" InputType="Text" IsAutoCapitalizationEnabled="True"
+                        BackgroundColor="Transparent" InputType="Plain" IsAutoCapitalizationEnabled="True"
                         IsMaxLengthCounterVisible="False" Text="{Binding OriginIATA, Mode=TwoWay}"
                         Placeholder="{helpers:Translate enterIATA}" ReturnType="Search"
                         TextChangeCommand="{Binding FilterOriginCommand}" MaxLength="32">

@@ -18,8 +18,8 @@ namespace AviaExplorer.ViewModels.Avia
 
         private string _originIATA = "TOF";
         private ObservableCollection<FlightModel> _destinations = new ObservableCollection<FlightModel>();
-        private List<string> _choices;
-        private List<string> _availableChoices;
+        private string[] _choices;
+        private ObservableCollection<string> _availableChoices;
         private bool _choicesUpdating;
 
         public string OriginIATA
@@ -42,7 +42,7 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
-        public List<string> Choices
+        public string[] Choices
         {
             get => _choices;
             set
@@ -52,7 +52,7 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
-        public List<string> AvailableChoices
+        public ObservableCollection<string> AvailableChoices
         {
             get => _availableChoices;
             set
@@ -89,7 +89,8 @@ namespace AviaExplorer.ViewModels.Avia
             _aviaInfo = aviaInfo;
             _language = language;
 
-            Choices = AvailableChoices = new List<string> { _originIATA };
+            Choices = new[] { _originIATA };
+            AvailableChoices = new ObservableCollection<string>(Choices);
         }
 
         private void FilterOrigin(string text)
@@ -98,11 +99,12 @@ namespace AviaExplorer.ViewModels.Avia
             FilterOriginCommand?.CanExecute(false);
             if (string.IsNullOrEmpty(filterData))
             {
-                AvailableChoices = Choices;
+                AvailableChoices = new ObservableCollection<string>(Choices);
                 FilterOriginCommand?.CanExecute(true);
                 return;
             }
-            AvailableChoices = Choices.Where(x => x.StartsWith(filterData.ToUpper())).ToList();
+            AvailableChoices = new ObservableCollection<string>(Choices
+                .Where(x => x.StartsWith(filterData.ToUpper())));
             FilterOriginCommand?.CanExecute(true);
         }
 
@@ -115,11 +117,12 @@ namespace AviaExplorer.ViewModels.Avia
                 .ContinueWith(t =>
                 {
                     var result = t.Result;
-                    Choices = AvailableChoices = result.Directions
+                    Choices = result.Directions
                         .Select(x => x.IATA)
                         .Distinct()
                         .OrderBy(x => x)
-                        .ToList();
+                        .ToArray();
+                    AvailableChoices = new ObservableCollection<string>(Choices);
                     ChoicesUpdating = false;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
