@@ -6,12 +6,12 @@ namespace AviaExplorer.Services.Avia.Api
     public interface IAviaApi
     {
         [Get("/supported_directions.json")]
-        Task<TResult> GetSupportedDirections<TResult>([AliasAs("origin_iata")] string originIATA,
+        Task<TResult> GetSupportedDirectionsAsync<TResult>([AliasAs("origin_iata")] string originIATA,
                                                      [AliasAs("one_way")] bool oneWay,
                                                      [AliasAs("locale")] string language);
 
         [Get("/prices.json")]
-        Task<TResult> GetPrices<TResult>([AliasAs("origin_iata")] string originIATA,
+        Task<TResult> GetFlightsDataAsync<TResult>([AliasAs("origin_iata")] string originIATA,
                                          [AliasAs("one_way")] bool oneWay,
                                          [AliasAs("locale")] string language,
                                          [AliasAs("period")] string periodDate,

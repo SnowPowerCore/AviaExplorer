@@ -77,5 +77,14 @@ namespace AviaExplorer.Resources {
                 return ResourceManager.GetString("confirmExit", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter airport code.
+        /// </summary>
+        internal static string enterIATA {
+            get {
+                return ResourceManager.GetString("enterIATA", resourceCulture);
+            }
+        }
     }
 }

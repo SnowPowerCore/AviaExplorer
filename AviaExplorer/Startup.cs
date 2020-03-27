@@ -1,13 +1,16 @@
-﻿using AviaExplorer.Services.Avia.RestClient;
+﻿using AviaExplorer.Services.Avia.AviaInfo;
+using AviaExplorer.Services.Avia.RestClient;
 using AviaExplorer.Services.Utils.Analytics;
 using AviaExplorer.Services.Utils.Language;
 using AviaExplorer.Services.Utils.Message;
 using AviaExplorer.Services.Utils.Navigation;
 using AviaExplorer.Services.Utils.Settings;
 using AviaExplorer.Services.Utils.Shell;
+using AviaExplorer.ViewModels.Avia;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 
 namespace AviaExplorer
 {
@@ -15,8 +18,14 @@ namespace AviaExplorer
     {
         public static App Init(Action<IServiceCollection> nativeConfigureServices)
         {
-            var host = Host
-                .CreateDefaultBuilder()
+            var host = new HostBuilder()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseDefaultServiceProvider((context, options) =>
+                {
+                    var isDevelopment = context.HostingEnvironment.IsDevelopment();
+                    options.ValidateScopes = isDevelopment;
+                    options.ValidateOnBuild = isDevelopment;
+                })
                 .ConfigureServices(x =>
                 {
                     nativeConfigureServices(x);
@@ -40,10 +49,12 @@ namespace AviaExplorer
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<IShellService, ShellService>();
 
+            services.AddSingleton<IAviaInfoService, AviaInfoService>();
             services.AddSingleton<IRestClientProvider, RestClientProvider>();
             #endregion
 
             #region ViewModels
+            services.AddSingleton<FlightsViewModel>();
             #endregion
 
             #region Application

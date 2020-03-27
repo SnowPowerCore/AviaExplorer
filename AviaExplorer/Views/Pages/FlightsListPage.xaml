@@ -1,25 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:AviaExplorer.Helpers"
+             xmlns:aviavms="clr-namespace:AviaExplorer.ViewModels.Avia"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             x:Class="AviaExplorer.Views.Pages.FlightsListPage">
-    <RefreshView IsRefreshing="False">
-        <CollectionView>
-            <CollectionView.Header>
-                <material:MaterialTextField IsAutoCapitalizationEnabled="True"
-                    IsSpellCheckEnabled="False" BackgroundColor="Transparent"
-                    InputType="Choice" ShouldAnimateUnderline="True"
-                    MaxLength="32" ReturnType="Search"/>
-            </CollectionView.Header>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <ContentView Padding="5">
-                        <material:MaterialCard Padding="5" Elevation="8">
-                            
-                        </material:MaterialCard>
-                    </ContentView>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+             x:Class="AviaExplorer.Views.Pages.FlightsListPage"
+             BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:FlightsViewModel}}">
+    
 </ContentPage>
