@@ -7,10 +7,12 @@ using AviaExplorer.Services.Utils.Navigation;
 using AviaExplorer.Services.Utils.Settings;
 using AviaExplorer.Services.Utils.Shell;
 using AviaExplorer.ViewModels.Avia;
+using AviaExplorer.Views.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
+using Xamarin.Forms;
 
 namespace AviaExplorer
 {
@@ -54,7 +56,8 @@ namespace AviaExplorer
             #endregion
 
             #region ViewModels
-            services.AddSingleton<FlightsViewModel>();
+            services.AddSingleton<OriginSelectionViewModel>();
+            services.AddSingleton<DirectionsViewModel>();
             #endregion
 
             #region Application
@@ -84,6 +87,7 @@ namespace AviaExplorer
     {
         public static IHostBuilder RegisterRoutes(this IHostBuilder host)
         {
+            Routing.RegisterRoute("directions", typeof(DirectionsListPage));
             return host;
         }
     }

@@ -1,8 +1,9 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
-using AviaExplorer.Models.Avia;
 using AviaExplorer.Services.Avia.AviaInfo;
+using AviaExplorer.Services.Utils.Analytics;
 using AviaExplorer.Services.Utils.Language;
-using System.Collections.Generic;
+using AviaExplorer.Services.Utils.Navigation;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,33 +12,26 @@ using Xamarin.Forms;
 
 namespace AviaExplorer.ViewModels.Avia
 {
-    public class FlightsViewModel : BaseViewModel
+    public class OriginSelectionViewModel : BaseViewModel
     {
+        #region Fields
         private IAviaInfoService _aviaInfo;
+        private IAnalyticsService _analytics;
         private ILanguageService _language;
+        private INavigationService _navigation;
 
         private string _originIATA = "TOF";
-        private ObservableCollection<FlightModel> _destinations = new ObservableCollection<FlightModel>();
         private string[] _choices;
         private ObservableCollection<string> _availableChoices;
-        private bool _choicesUpdating;
+        #endregion
 
+        #region Properties
         public string OriginIATA
         {
             get => _originIATA;
             set
             {
                 _originIATA = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<FlightModel> Destinations
-        {
-            get => _destinations;
-            set
-            {
-                _destinations = value;
                 OnPropertyChanged();
             }
         }
@@ -62,37 +56,45 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
-        public bool ChoicesUpdating
-        {
-            get => _choicesUpdating;
-            set
-            {
-                _choicesUpdating = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool ChoicesUpdating { get; set; }
+        #endregion
 
+        #region Commands
         public IAsyncCommand GetChoicesCommand =>
             new AsyncCommand(GetChoicesAsync,
                 _ => !ChoicesUpdating,
-                e => ChoicesUpdating = false);
+                e =>
+                {
+                    ChoicesUpdating = false;
+                    _analytics.TrackError(e);
+                });
 
-        public IAsyncCommand GetSupportedDirectionsCommand =>
-            new AsyncCommand(GetSupportedDirectionsAsync);
+        public IAsyncCommand<string> NavigateToFlightsCommand =>
+            new AsyncCommand<string>(NavigateToFlightsAsync);
+
+        public ICommand ClearChoicesCommand =>
+            new Command(ClearChoices);
 
         public ICommand FilterOriginCommand =>
             new Command<string>(FilterOrigin);
+        #endregion
 
-        public FlightsViewModel(IAviaInfoService aviaInfo,
-                                ILanguageService language)
+        #region Constructor
+        public OriginSelectionViewModel(IAviaInfoService aviaInfo,
+                                IAnalyticsService analytics,
+                                ILanguageService language,
+                                INavigationService navigation)
         {
             _aviaInfo = aviaInfo;
+            _analytics = analytics;
             _language = language;
+            _navigation = navigation;
 
-            Choices = new[] { _originIATA };
-            AvailableChoices = new ObservableCollection<string>(Choices);
+            GetChoicesCommand?.Execute(null);
         }
+        #endregion
 
+        #region Methods
         private void FilterOrigin(string text)
         {
             var filterData = text;
@@ -127,24 +129,14 @@ namespace AviaExplorer.ViewModels.Avia
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
-        private Task GetSupportedDirectionsAsync()
+        private void ClearChoices()
         {
-            if (string.IsNullOrEmpty(OriginIATA)) return Task.CompletedTask;
-
-            return _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
-                .ContinueWith(t =>
-                {
-                    var result = t.Result;
-                    Destinations = new ObservableCollection<FlightModel>(
-                        result.Directions.Select(x => new FlightModel
-                        {
-                            OriginIATA = result.Origin.IATA,
-                            DestinationIATA = x.IATA,
-                            OriginName = result.Origin.Name,
-                            DestinationName = x.Name,
-                            DestinationCountry = x.Country
-                        }));
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            AvailableChoices.Clear();
+            AvailableChoices = new ObservableCollection<string>();
         }
+
+        private Task NavigateToFlightsAsync(string origin) =>
+            _navigation.NavigateToPageAsync($"directions?iata={origin}", false);
+        #endregion
     }
 }

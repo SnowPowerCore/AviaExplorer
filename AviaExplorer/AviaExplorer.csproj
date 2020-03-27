@@ -27,8 +27,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Views\Pages\FlightsListPage.xaml.cs">
-      <DependentUpon>FlightsListPage.xaml</DependentUpon>
+    <Compile Update="Views\Pages\DirectionsListPage.xaml.cs">
+      <DependentUpon>DirectionsListPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -37,7 +37,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Pages\FlightsListPage.xaml">
+    <EmbeddedResource Update="Views\Pages\DirectionsListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Pages\FlightDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\OriginSelectionPage.xaml">

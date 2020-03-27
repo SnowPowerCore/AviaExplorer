@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:AviaExplorer.Helpers"
+             xmlns:aviavms="clr-namespace:AviaExplorer.ViewModels.Avia"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
+             Title="Select origin airport"
+             BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:FlightDetailViewModel}}"
+             x:Class="AviaExplorer.Views.Pages.FlightDetailPage">
+    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
+        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
+            <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="system:String">
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </ScrollView>
+</ContentPage>

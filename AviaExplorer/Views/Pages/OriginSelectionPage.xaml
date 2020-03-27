@@ -7,18 +7,19 @@
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
              Title="Select origin airport"
-             BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:FlightsViewModel}}"
-             x:DataType="aviavms:FlightsViewModel"
+             BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:OriginSelectionViewModel}}"
+             x:DataType="aviavms:OriginSelectionViewModel"
              x:Class="AviaExplorer.Views.Pages.OriginSelectionPage">
     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
-        <RefreshView Command="{Binding GetChoicesCommand}">
+        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
             <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.Header>
                     <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
                         BackgroundColor="Transparent" InputType="Plain" IsAutoCapitalizationEnabled="True"
-                        IsMaxLengthCounterVisible="False" Text="{Binding OriginIATA, Mode=TwoWay}"
-                        Placeholder="{helpers:Translate enterIATA}" ReturnType="Search"
-                        TextChangeCommand="{Binding FilterOriginCommand}" MaxLength="32">
+                        FloatingPlaceholderEnabled="False" Placeholder="{helpers:Translate enterIATA}"
+                        Text="{Binding OriginIATA, Mode=TwoWay}" IsMaxLengthCounterVisible="False"
+                        TextChangeCommand="{Binding FilterOriginCommand}"
+                        ReturnType="Search" MaxLength="32">
                         <material:MaterialTextField.LeadingIcon>
                             <FontImageSource FontFamily="{DynamicResource SegoeMDL2FontFamily}"
                                 Glyph="&#xe1a3;"/>
@@ -28,7 +29,11 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="system:String">
                         <ContentView Padding="10,15" BackgroundColor="WhiteSmoke"
-                            xe:TouchEffect.Color="White">
+                            xe:TouchEffect.Color="White"
+                            xe:Commands.Tap="{Binding 
+                            Source={x:RelativeSource AncestorType={x:Type ContentPage}},
+                            Path=BindingContext.NavigateToFlightsCommand}"
+                            xe:Commands.TapParameter="{Binding .}">
                             <material:MaterialLabel Text="{Binding .}"/>
                         </ContentView>
                     </DataTemplate>

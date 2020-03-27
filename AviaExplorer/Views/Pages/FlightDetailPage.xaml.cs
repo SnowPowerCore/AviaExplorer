@@ -1,8 +1,8 @@
 ﻿namespace AviaExplorer.Views.Pages
 {
-    public partial class FlightsListPage
+    public partial class FlightDetailPage
     {
-        public FlightsListPage() =>
+        public FlightDetailPage() =>
             InitializeComponent();
     }
 }
