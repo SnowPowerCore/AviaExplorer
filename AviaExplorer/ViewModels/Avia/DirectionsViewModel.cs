@@ -1,12 +1,12 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using AviaExplorer.Models.Avia;
+using AviaExplorer.Models.Utils;
 using AviaExplorer.Services.Avia.AviaInfo;
 using AviaExplorer.Services.Utils.Analytics;
 using AviaExplorer.Services.Utils.Language;
 using AviaExplorer.Services.Utils.Navigation;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,12 +23,13 @@ namespace AviaExplorer.ViewModels.Avia
         private readonly ILanguageService _language;
         private readonly INavigationService _navigation;
 
-        private List<DirectionModel> _directions = new List<DirectionModel>();
+        private ObservableRangeCollection<DirectionModel> _directions =
+            new ObservableRangeCollection<DirectionModel>();
         private bool _directionsUpdating;
         #endregion
 
         #region Properties
-        public List<DirectionModel> Directions
+        public ObservableRangeCollection<DirectionModel> Directions
         {
             get => _directions;
             set
@@ -89,11 +90,13 @@ namespace AviaExplorer.ViewModels.Avia
         {
             if (string.IsNullOrEmpty(OriginAirport.Name)) return Task.CompletedTask;
 
+            Directions.Clear();
+
             return _aviaInfo.GetSupportedDirectionsAsync(OriginAirport.Name, true, _language.Current)
                 .ContinueWith(t =>
                 {
                     var result = t.Result;
-                    Directions = result.Directions
+                    Directions.AddRange(result.Directions
                         .Select(x => new DirectionModel
                         {
                             OriginIATA = result.Origin.IATA,
@@ -104,8 +107,7 @@ namespace AviaExplorer.ViewModels.Avia
                             GeoPosition = new Position(
                                 x.Coordinates.LastOrDefault(),
                                 x.Coordinates.FirstOrDefault())
-                        })
-                        .ToList();
+                        }));
                     DirectionsUpdating = false;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
@@ -117,11 +119,8 @@ namespace AviaExplorer.ViewModels.Avia
             return _navigation.NavigateToPageAsync($"flights?data={data}");
         }
 
-        private void ClearSupportedDirections()
-        {
+        private void ClearSupportedDirections() =>
             Directions.Clear();
-            Directions = new List<DirectionModel>();
-        }
         #endregion
     }
 }

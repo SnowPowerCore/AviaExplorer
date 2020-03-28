@@ -1,10 +1,10 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using AviaExplorer.Models.Avia;
+using AviaExplorer.Models.Utils;
 using AviaExplorer.Services.Avia.AviaInfo;
 using AviaExplorer.Services.Utils.Analytics;
 using AviaExplorer.Services.Utils.Language;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,7 +19,8 @@ namespace AviaExplorer.ViewModels.Avia
         private readonly ILanguageService _language;
 
         private DirectionModel _currentDirection;
-        private List<FlightModel> _flights;
+        private ObservableRangeCollection<FlightModel> _flights =
+            new ObservableRangeCollection<FlightModel>();
         private bool _flightsUpdating;
 
         public DirectionModel CurrentDirection
@@ -32,7 +33,7 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
-        public List<FlightModel> Flights
+        public ObservableRangeCollection<FlightModel> Flights
         {
             get => _flights;
             set
@@ -77,20 +78,21 @@ namespace AviaExplorer.ViewModels.Avia
         {
             if (CurrentDirection is null) return Task.CompletedTask;
 
+            Flights.Clear();
+
             return _aviaInfo.GetFlightsDataAsync(CurrentDirection.OriginIATA, false, _language.Current,
                 "2018-12-10:season", true, "50000", true, false, false, "1", "7")
                     .ContinueWith(t =>
                     {
                         var result = t.Result;
-                        Flights = result
+                        Flights.AddRange(result
                             .Where(x => x.Actual && x.Destination == CurrentDirection.DestinationIATA)
                             .Select(x => new FlightModel
                             {
                                 DepartureDate = DateTime.Parse(x.DepartDate),
                                 ReturnDate = DateTime.Parse(x.ReturnDate),
                                 Price = x.FlightPrice
-                            })
-                            .ToList();
+                            }));
                         FlightsUpdating = false;
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }

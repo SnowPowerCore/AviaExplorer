@@ -8,8 +8,6 @@ using AviaExplorer.Services.Utils.Language;
 using AviaExplorer.Services.Utils.Navigation;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -28,7 +26,8 @@ namespace AviaExplorer.ViewModels.Avia
 
         private string _originIATA = "TOF";
         private AirportChoice[] _choices;
-        private ObservableRangeCollection<AirportChoice> _availableChoices;
+        private ObservableRangeCollection<AirportChoice> _availableChoices = 
+            new ObservableRangeCollection<AirportChoice>();
         private bool _choicesUpdating;
         #endregion
 
@@ -147,6 +146,8 @@ namespace AviaExplorer.ViewModels.Avia
         {
             if (string.IsNullOrEmpty(OriginIATA)) return Task.CompletedTask;
 
+            AvailableChoices.Clear();
+
             return _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
                 .ContinueWith(t =>
                 {
@@ -162,16 +163,13 @@ namespace AviaExplorer.ViewModels.Avia
                         .Distinct()
                         .OrderBy(x => x.Name)
                         .ToArray();
-                    AvailableChoices = new ObservableRangeCollection<AirportChoice>(Choices);
+                    AvailableChoices.AddRange(Choices);
                     ChoicesUpdating = false;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
-        private void ClearChoices()
-        {
+        private void ClearChoices() =>
             AvailableChoices.Clear();
-            AvailableChoices = new ObservableRangeCollection<AirportChoice>();
-        }
 
         private Task NavigateToFlightsAsync(AirportChoice origin)
         {
