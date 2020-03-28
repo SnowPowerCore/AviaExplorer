@@ -1,6 +1,16 @@
-﻿namespace AviaExplorer.Models.Avia
+﻿using System;
+using Xamarin.Forms.Maps;
+
+namespace AviaExplorer.Models.Avia
 {
-    public class FlightModel
+    public class AirportChoice
+    {
+        public string Name { get; set; }
+
+        public Position GeoPosition { get; set; }
+    }
+
+    public class DirectionModel
     {
         public string OriginName { get; set; }
 
@@ -15,5 +25,16 @@
         public string DestinationIATA { get; set; }
 
         public string CombinedIATA => $"{ OriginIATA } - { DestinationIATA }";
+
+        public Position GeoPosition { get; set; }
+    }
+
+    public class FlightModel
+    {
+        public DateTime DepartureDate { get; set; }
+
+        public DateTime ArrivalDate { get; set; }
+
+        public ulong Price { get; set; }
     }
 }

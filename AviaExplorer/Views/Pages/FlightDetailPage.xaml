@@ -5,16 +5,37 @@
              xmlns:aviavms="clr-namespace:AviaExplorer.ViewModels.Avia"
              xmlns:system="clr-namespace:System;assembly=netstandard"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
-             Title="Select origin airport"
+             xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects" xmlns:models="clr-namespace:AviaExplorer.Models.Avia"
+             Title=""
              BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:FlightDetailViewModel}}"
              x:Class="AviaExplorer.Views.Pages.FlightDetailPage">
     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
-        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
-            <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
-                
+        <RefreshView IsRefreshing="{Binding FlightsUpdating}" Command="{Binding GetFlightsDataCommand}">
+            <CollectionView ItemsSource="{Binding Flights}" ItemSizingStrategy="MeasureFirstItem">
+                <CollectionView.Header>
+                    <ContentView Padding="10,15">
+                        <material:MaterialCard Padding="10" Elevation="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="25"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding CurrentDirection.CombinedName}" HorizontalOptions="Start"
+                                    TextColor="Black" LineBreakMode="WordWrap" FontSize="Header"/>
+                                <material:MaterialLabel Grid.Row="1"
+                                    Text="{Binding CurrentDirection.CombinedIATA}" TextColor="Gray"/>
+                                <Label Grid.Column="2" HorizontalOptions="End"
+                                    Text="{Binding CurrentDirection.DestinationCountry}" TextColor="OrangeRed"/>
+                            </Grid>
+                        </material:MaterialCard>
+                    </ContentView>
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="system:String">
+                    <DataTemplate x:DataType="models:FlightModel">
                         
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

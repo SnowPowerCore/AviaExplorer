@@ -58,6 +58,7 @@ namespace AviaExplorer
             #region ViewModels
             services.AddSingleton<OriginSelectionViewModel>();
             services.AddSingleton<DirectionsViewModel>();
+            services.AddSingleton<FlightDetailViewModel>();
             #endregion
 
             #region Application
@@ -87,7 +88,8 @@ namespace AviaExplorer
     {
         public static IHostBuilder RegisterRoutes(this IHostBuilder host)
         {
-            Routing.RegisterRoute("directions", typeof(DirectionsListPage));
+            Routing.RegisterRoute("directions", typeof(DirectionsPage));
+            Routing.RegisterRoute("flights", typeof(FlightDetailPage));
             return host;
         }
     }

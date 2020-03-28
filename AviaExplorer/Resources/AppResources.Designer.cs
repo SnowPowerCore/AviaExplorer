@@ -79,11 +79,29 @@ namespace AviaExplorer.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Select destination.
+        /// </summary>
+        internal static string directionsPageTitle {
+            get {
+                return ResourceManager.GetString("directionsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enter airport code.
         /// </summary>
         internal static string enterIATA {
             get {
                 return ResourceManager.GetString("enterIATA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select origin airport.
+        /// </summary>
+        internal static string originSelectionPageTitle {
+            get {
+                return ResourceManager.GetString("originSelectionPageTitle", resourceCulture);
             }
         }
     }

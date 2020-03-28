@@ -28,6 +28,7 @@ namespace AviaExplorer.iOS
             services.AddSingleton(typeof(ILocalizeService), typeof(LocalizeService));
             services.AddSingleton(typeof(IAppQuit), typeof(AppQuit));
             services.AddSingleton(typeof(IToast), typeof(Toast));
+            services.AddSingleton(typeof(IKeyboard), typeof(Keyboard));
         }
     }
 }

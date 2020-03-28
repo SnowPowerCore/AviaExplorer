@@ -14,8 +14,8 @@ namespace AviaExplorer.Services.Utils.Settings
         private readonly string _supportEmail = "-";
         private readonly string _defaultApiUrl = "http://map.aviasales.ru";
         private readonly string _defaultAppUpdateUrl = "";
-        private readonly string _appCenterAndroidKey = "android=;";
-        private readonly string _appCenteriOSKey = "ios=;";
+        private readonly string _appCenterAndroidKey = "android=befa8f25-96c6-481a-85d7-0ef8eeb1f8a0;";
+        private readonly string _appCenteriOSKey = "ios=c3f7f289-bfd0-485b-926e-12feb91751db;";
         #endregion
 
         #region Properties

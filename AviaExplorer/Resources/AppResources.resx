@@ -123,7 +123,13 @@
   <data name="confirmExit" xml:space="preserve">
     <value>Exit app</value>
   </data>
+  <data name="directionsPageTitle" xml:space="preserve">
+    <value>Select destination</value>
+  </data>
   <data name="enterIATA" xml:space="preserve">
     <value>Enter airport code</value>
+  </data>
+  <data name="originSelectionPageTitle" xml:space="preserve">
+    <value>Select origin airport</value>
   </data>
 </root>

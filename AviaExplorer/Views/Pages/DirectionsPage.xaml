@@ -4,34 +4,49 @@
              xmlns:helpers="clr-namespace:AviaExplorer.Helpers"
              xmlns:models="clr-namespace:AviaExplorer.Models.Avia"
              xmlns:aviavms="clr-namespace:AviaExplorer.ViewModels.Avia"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             Title="Select destination"
+             Title="{helpers:Translate directionsPageTitle}"
              BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:DirectionsViewModel}}"
              x:DataType="aviavms:DirectionsViewModel"
-             x:Class="AviaExplorer.Views.Pages.DirectionsListPage">
-    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
+             x:Name="directions"
+             x:Class="AviaExplorer.Views.Pages.DirectionsPage">
+    <StackLayout Spacing="0">
+        <maps:Map x:Name="map" MapType="Street" HeightRequest="150"
+            BackgroundColor="Transparent" ItemsSource="{Binding Directions}">
+            <maps:Map.ItemTemplate>
+                <DataTemplate x:DataType="models:DirectionModel">
+                    <maps:Pin Position="{Binding GeoPosition}"
+                        Label="{Binding DestinationName}"
+                        MarkerClicked="Pin_MarkerClicked"/>
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
+        </maps:Map>
         <RefreshView IsRefreshing="{Binding DirectionsUpdating}" Command="{Binding GetSupportedDirectionsCommand}">
             <CollectionView ItemsSource="{Binding Directions}" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:FlightModel">
+                    <DataTemplate x:DataType="models:DirectionModel">
                         <ContentView Padding="10,15" BackgroundColor="WhiteSmoke"
-                            xe:TouchEffect.Color="White">
+                            xe:TouchEffect.Color="White"
+                            xe:Commands.Tap="{Binding
+                            Source={x:Reference directions},
+                            Path=BindingContext.NavigateAirportCommand}"
+                            xe:Commands.TapParameter="{Binding DestinationName}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="25"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <material:MaterialLabel Text="{Binding CombinedName}"
-                                    TextColor="Black" MaxLines="1"
-                                    LineBreakMode="CharacterWrap" FontSize="Body"/>
+                                <Label Text="{Binding CombinedName}" HorizontalOptions="Start"
+                                    TextColor="Black" LineBreakMode="WordWrap"/>
                                 <material:MaterialLabel Grid.Row="1"
                                     Text="{Binding CombinedIATA}" TextColor="Gray"/>
-                                <material:MaterialLabel Grid.Column="2" HorizontalTextAlignment="End"
+                                <Label Grid.Column="2" HorizontalOptions="End"
                                     Text="{Binding DestinationCountry}" TextColor="OrangeRed"/>
                             </Grid>
                         </ContentView>
@@ -39,5 +54,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
-    </ScrollView>
+    </StackLayout>
 </ContentPage>

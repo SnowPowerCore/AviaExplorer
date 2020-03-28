@@ -52,7 +52,11 @@ namespace AviaExplorer.Droid
             services.AddSingleton(typeof(ILocalizeService), typeof(LocalizeService));
             services.AddSingleton(typeof(IAppQuit), typeof(AppQuit));
             services.AddSingleton(typeof(IToast), typeof(Toast));
+            services.AddSingleton(typeof(IKeyboard), typeof(Keyboard));
         }
+
+        public override void OnBackPressed() =>
+            XF.Material.Droid.Material.HandleBackButton(base.OnBackPressed);
 
         public override void OnRequestPermissionsResult(int requestCode, 
             string[] permissions, [GeneratedEnum] Permission[] grantResults)

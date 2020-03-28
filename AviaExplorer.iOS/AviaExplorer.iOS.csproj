@@ -68,6 +68,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Implementations\AppQuit.cs" />
+    <Compile Include="Implementations\Keyboard.cs" />
     <Compile Include="Implementations\Localize.cs" />
     <Compile Include="Implementations\Toast.cs" />
     <Compile Include="Main.cs" />
