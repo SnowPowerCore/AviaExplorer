@@ -174,6 +174,7 @@ namespace AviaExplorer.ViewModels.Avia
         private Task NavigateToFlightsAsync(AirportChoice origin)
         {
             if (origin is null) return Task.CompletedTask;
+            OriginIATA = origin.Name;
             var data = Uri.EscapeDataString(JsonConvert.SerializeObject(origin));
             return _navigation.NavigateToPageAsync($"directions?data={data}", false);
         }

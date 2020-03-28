@@ -165,4 +165,9 @@
       <Name>AviaExplorer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadWrongLinkerErrorInfoBarAviaExploreriOSHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

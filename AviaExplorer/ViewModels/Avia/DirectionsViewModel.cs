@@ -7,6 +7,7 @@ using AviaExplorer.Services.Utils.Language;
 using AviaExplorer.Services.Utils.Navigation;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -25,6 +26,7 @@ namespace AviaExplorer.ViewModels.Avia
 
         private ObservableRangeCollection<DirectionModel> _directions =
             new ObservableRangeCollection<DirectionModel>();
+        private List<DirectionModel> _pins;
         private bool _directionsUpdating;
         #endregion
 
@@ -35,6 +37,16 @@ namespace AviaExplorer.ViewModels.Avia
             set
             {
                 _directions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DirectionModel> Pins
+        {
+            get => _pins;
+            set
+            {
+                _pins = value;
                 OnPropertyChanged();
             }
         }
@@ -108,6 +120,7 @@ namespace AviaExplorer.ViewModels.Avia
                                 x.Coordinates.LastOrDefault(),
                                 x.Coordinates.FirstOrDefault())
                         }));
+                    Pins = Directions.ToList();
                     DirectionsUpdating = false;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }

@@ -11,7 +11,11 @@
              x:DataType="aviavms:OriginSelectionViewModel"
              x:Name="originSelection"
              x:Class="AviaExplorer.Views.Pages.OriginSelectionPage">
-    <StackLayout Spacing="0">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
                         BackgroundColor="Transparent" InputType="Plain" IsAutoCapitalizationEnabled="True"
                         Placeholder="{helpers:Translate enterIATA}" MaxLength="32"
@@ -23,7 +27,8 @@
                     Glyph="&#xe1a3;"/>
             </material:MaterialTextField.LeadingIcon>
         </material:MaterialTextField>
-        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
+        <RefreshView Grid.Row="1" IsRefreshing="{Binding ChoicesUpdating}"
+            Command="{Binding GetChoicesCommand}">
             <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:AirportChoice">
@@ -39,5 +44,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
-    </StackLayout>
+    </Grid>
 </ContentPage>
