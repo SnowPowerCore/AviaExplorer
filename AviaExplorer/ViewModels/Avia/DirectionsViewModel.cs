@@ -24,6 +24,11 @@ namespace AviaExplorer.ViewModels.Avia
         private readonly ILanguageService _language;
         private readonly INavigationService _navigation;
 
+        private IAsyncCommand _getSupportedDirectionsCommand;
+        private IAsyncCommand<string> _navigateAirportCommand;
+        private ICommand _clearSupportedDirectionsCommand;
+        private ICommand _setOriginAirportCommand;
+
         private ObservableRangeCollection<DirectionModel> _directions =
             new ObservableRangeCollection<DirectionModel>();
         private List<DirectionModel> _pins;
@@ -80,32 +85,32 @@ namespace AviaExplorer.ViewModels.Avia
         /// <summary>
         /// Fetches supported directions
         /// </summary>
-        public IAsyncCommand GetSupportedDirectionsCommand =>
-            new AsyncCommand(GetSupportedDirectionsAsync,
+        public IAsyncCommand GetSupportedDirectionsCommand => _getSupportedDirectionsCommand
+            ?? ( _getSupportedDirectionsCommand = new AsyncCommand(GetSupportedDirectionsAsync,
                 _ => !DirectionsUpdating,
                 e =>
                 {
                     DirectionsUpdating = false;
                     _analytics.TrackError(e);
-                });
+                }));
 
         /// <summary>
         /// Navigates to the next page
         /// </summary>
-        public IAsyncCommand<string> NavigateAirportCommand =>
-            new AsyncCommand<string>(NavigateAirportAsync);
+        public IAsyncCommand<string> NavigateAirportCommand => _navigateAirportCommand
+            ?? (_navigateAirportCommand = new AsyncCommand<string>(NavigateAirportAsync));
 
         /// <summary>
         /// Clears supported directions for recycling event
         /// </summary>
-        public ICommand ClearSupportedDirectionsCommand =>
-            new Command(ClearSupportedDirections);
+        public ICommand ClearSupportedDirectionsCommand => _clearSupportedDirectionsCommand
+            ?? (_clearSupportedDirectionsCommand = new Command(ClearSupportedDirections));
 
         /// <summary>
         /// Sets chosen airport choice
         /// </summary>
-        public ICommand SetOriginAirportCommand =>
-            new Command<AirportChoice>(iata => OriginAirport = iata);
+        public ICommand SetOriginAirportCommand => _setOriginAirportCommand
+            ?? (_setOriginAirportCommand = new Command<AirportChoice>(iata => OriginAirport = iata));
         #endregion
 
         public DirectionsViewModel(IAviaInfoService aviaInfo,
@@ -120,31 +125,30 @@ namespace AviaExplorer.ViewModels.Avia
         }
 
         #region Methods
-        private Task GetSupportedDirectionsAsync()
+        private async Task GetSupportedDirectionsAsync()
         {
-            if (string.IsNullOrEmpty(OriginAirport.Name)) return Task.CompletedTask;
+            if (string.IsNullOrEmpty(OriginAirport.Name)) return;
 
             Directions.Clear();
 
-            return _aviaInfo.GetSupportedDirectionsAsync(OriginAirport.Name, true, _language.Current)
-                .ContinueWith(t =>
+            var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginAirport.Name, true, _language.Current)
+                .ConfigureAwait(false);
+
+            Directions.AddRange(result.Directions
+                .Select(x => new DirectionModel
                 {
-                    var result = t.Result;
-                    Directions.AddRange(result.Directions
-                        .Select(x => new DirectionModel
-                        {
-                            OriginIATA = result.Origin.IATA,
-                            DestinationIATA = x.IATA,
-                            OriginName = result.Origin.Name,
-                            DestinationName = x.Name,
-                            DestinationCountry = x.Country,
-                            GeoPosition = new Position(
-                                x.Coordinates.LastOrDefault(),
-                                x.Coordinates.FirstOrDefault())
-                        }));
-                    Pins = Directions.ToList();
-                    DirectionsUpdating = false;
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    OriginIATA = result.Origin.IATA,
+                    DestinationIATA = x.IATA,
+                    OriginName = result.Origin.Name,
+                    DestinationName = x.Name,
+                    DestinationCountry = x.Country,
+                    GeoPosition = new Position(
+                        x.Coordinates.LastOrDefault(),
+                        x.Coordinates.FirstOrDefault())
+                }));
+            Pins = Directions.ToList();
+
+            DirectionsUpdating = false;
         }
 
         private Task NavigateAirportAsync(string name)

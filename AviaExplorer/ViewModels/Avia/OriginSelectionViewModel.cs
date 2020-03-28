@@ -27,6 +27,13 @@ namespace AviaExplorer.ViewModels.Avia
         private readonly IKeyboard _keyboard;
         private readonly INavigationService _navigation;
 
+        private IAsyncCommand _getChoicesCommand;
+        private IAsyncCommand<AirportChoice> _navigateToFlightsCommand;
+        private ICommand _findAndNavigateCommand;
+        private ICommand _clearChoicesCommand;
+        private ICommand _filterOriginCommand;
+        private ICommand _hideKeyboardCommand;
+
         private string _originIATA = "TOF";
         private AirportChoice[] _choices;
         private ObservableRangeCollection<AirportChoice> _availableChoices = 
@@ -92,44 +99,44 @@ namespace AviaExplorer.ViewModels.Avia
         /// <summary>
         /// Fetches choices
         /// </summary>
-        public IAsyncCommand GetChoicesCommand =>
+        public IAsyncCommand GetChoicesCommand => _getChoicesCommand ?? (_getChoicesCommand =
             new AsyncCommand(GetChoicesAsync,
                 _ => !ChoicesUpdating,
                 e =>
                 {
                     ChoicesUpdating = false;
                     _analytics.TrackError(e);
-                });
+                }));
 
         /// <summary>
         /// Navigates to the next page
         /// </summary>
-        public IAsyncCommand<AirportChoice> NavigateToFlightsCommand =>
-            new AsyncCommand<AirportChoice>(NavigateToFlightsAsync);
+        public IAsyncCommand<AirportChoice> NavigateToFlightsCommand => _navigateToFlightsCommand 
+            ?? (_navigateToFlightsCommand = new AsyncCommand<AirportChoice>(NavigateToFlightsAsync));
 
         /// <summary>
         /// Finds the first choice and navigates to the next page
         /// </summary>
-        public ICommand FindAndNavigateCommand =>
-            new Command(FindAndNavigate);
+        public ICommand FindAndNavigateCommand => _findAndNavigateCommand ?? (_findAndNavigateCommand =
+            new Command(FindAndNavigate));
 
         /// <summary>
         /// Clears choices for recycling event
         /// </summary>
-        public ICommand ClearChoicesCommand =>
-            new Command(ClearChoices);
+        public ICommand ClearChoicesCommand => _clearChoicesCommand ?? (_clearChoicesCommand =
+            new Command(ClearChoices));
 
         /// <summary>
         /// Filters choices as the user continues to input
         /// </summary>
-        public ICommand FilterOriginCommand =>
-            new Command<string>(FilterOrigin);
+        public ICommand FilterOriginCommand => _filterOriginCommand ?? (_filterOriginCommand =
+            new Command<string>(FilterOrigin));
 
         /// <summary>
         /// Hides keyboard when navigated
         /// </summary>
-        public ICommand HideKeyboardCommand =>
-            new Command(() => _keyboard.HideKeyboard());
+        public ICommand HideKeyboardCommand => _hideKeyboardCommand ?? (_hideKeyboardCommand =
+            new Command(() => _keyboard.HideKeyboard()));
         #endregion
 
         public OriginSelectionViewModel(IAviaInfoService aviaInfo,
@@ -170,30 +177,29 @@ namespace AviaExplorer.ViewModels.Avia
             NavigateToFlightsCommand?.Execute(item);
         }
 
-        private Task GetChoicesAsync()
+        private async Task GetChoicesAsync()
         {
-            if (string.IsNullOrEmpty(OriginIATA)) return Task.CompletedTask;
+            if (string.IsNullOrEmpty(OriginIATA)) return;
 
             AvailableChoices.Clear();
 
-            return _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
-                .ContinueWith(t =>
+            var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
+                .ConfigureAwait(false);
+
+            Choices = result.Directions
+                .Select(x => new AirportChoice
                 {
-                    var result = t.Result;
-                    Choices = result.Directions
-                        .Select(x => new AirportChoice
-                        {
-                            Name = x.IATA,
-                            GeoPosition = new Xamarin.Forms.Maps.Position(
-                                x.Coordinates.LastOrDefault(),
-                                x.Coordinates.FirstOrDefault())
-                        })
-                        .Distinct()
-                        .OrderBy(x => x.Name)
-                        .ToArray();
-                    AvailableChoices.AddRange(Choices);
-                    ChoicesUpdating = false;
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    Name = x.IATA,
+                    GeoPosition = new Xamarin.Forms.Maps.Position(
+                        x.Coordinates.LastOrDefault(),
+                        x.Coordinates.FirstOrDefault())
+                })
+                .Distinct()
+                .OrderBy(x => x.Name)
+                .ToArray();
+            AvailableChoices.AddRange(Choices);
+
+            ChoicesUpdating = false;
         }
 
         private void ClearChoices() =>
