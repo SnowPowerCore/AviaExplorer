@@ -33,7 +33,7 @@ namespace AviaExplorer.Models.Avia
     {
         public DateTime DepartureDate { get; set; }
 
-        public DateTime ArrivalDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
         public ulong Price { get; set; }
     }

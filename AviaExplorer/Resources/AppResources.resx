@@ -129,6 +129,9 @@
   <data name="enterIATA" xml:space="preserve">
     <value>Enter airport code</value>
   </data>
+  <data name="flightsPageTitle" xml:space="preserve">
+    <value>Select the flight</value>
+  </data>
   <data name="originSelectionPageTitle" xml:space="preserve">
     <value>Select origin airport</value>
   </data>

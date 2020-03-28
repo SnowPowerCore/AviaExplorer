@@ -78,7 +78,7 @@ namespace AviaExplorer.ViewModels.Avia
             if (CurrentDirection is null) return Task.CompletedTask;
 
             return _aviaInfo.GetFlightsDataAsync(CurrentDirection.OriginIATA, false, _language.Current,
-                "2018-12-10", true, "50000", true, false, false, "1", "7")
+                "2018-12-10:season", true, "50000", true, false, false, "1", "7")
                     .ContinueWith(t =>
                     {
                         var result = t.Result;
@@ -87,7 +87,7 @@ namespace AviaExplorer.ViewModels.Avia
                             .Select(x => new FlightModel
                             {
                                 DepartureDate = DateTime.Parse(x.DepartDate),
-                                ArrivalDate = DateTime.Parse(x.ReturnDate),
+                                ReturnDate = DateTime.Parse(x.ReturnDate),
                                 Price = x.FlightPrice
                             })
                             .ToList();

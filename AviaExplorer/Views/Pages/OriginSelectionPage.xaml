@@ -11,22 +11,20 @@
              x:DataType="aviavms:OriginSelectionViewModel"
              x:Name="originSelection"
              x:Class="AviaExplorer.Views.Pages.OriginSelectionPage">
-    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
-        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
-            <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
-                <CollectionView.Header>
-                    <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
+    <StackLayout Spacing="0">
+        <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
                         BackgroundColor="Transparent" InputType="Plain" IsAutoCapitalizationEnabled="True"
-                        FloatingPlaceholderEnabled="False" Placeholder="{helpers:Translate enterIATA}"
+                        Placeholder="{helpers:Translate enterIATA}" MaxLength="32"
                         Text="{Binding OriginIATA, Mode=TwoWay}" IsMaxLengthCounterVisible="False"
                         TextChangeCommand="{Binding FilterOriginCommand, Mode=OneWay}"
-                        ReturnType="Search" MaxLength="32">
-                        <material:MaterialTextField.LeadingIcon>
-                            <FontImageSource FontFamily="{DynamicResource SegoeMDL2FontFamily}"
-                                Glyph="&#xe1a3;"/>
-                        </material:MaterialTextField.LeadingIcon>
-                    </material:MaterialTextField>
-                </CollectionView.Header>
+                        ReturnType="Search" ReturnCommand="{Binding FindAndNavigateCommand}">
+            <material:MaterialTextField.LeadingIcon>
+                <FontImageSource FontFamily="{DynamicResource SegoeMDL2FontFamily}"
+                    Glyph="&#xe1a3;"/>
+            </material:MaterialTextField.LeadingIcon>
+        </material:MaterialTextField>
+        <RefreshView IsRefreshing="{Binding ChoicesUpdating}" Command="{Binding GetChoicesCommand}">
+            <CollectionView ItemsSource="{Binding AvailableChoices}" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:AirportChoice">
                         <ContentView Padding="10,15" BackgroundColor="WhiteSmoke"
@@ -41,5 +39,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
-    </ScrollView>
+    </StackLayout>
 </ContentPage>

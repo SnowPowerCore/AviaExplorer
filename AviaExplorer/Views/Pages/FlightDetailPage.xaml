@@ -2,11 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:AviaExplorer.Helpers"
+             xmlns:models="clr-namespace:AviaExplorer.Models.Avia"
              xmlns:aviavms="clr-namespace:AviaExplorer.ViewModels.Avia"
-             xmlns:system="clr-namespace:System;assembly=netstandard"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects" xmlns:models="clr-namespace:AviaExplorer.Models.Avia"
-             Title=""
+             Title="{helpers:Translate flightsPageTitle}"
              BindingContext="{helpers:ViewModelLocator ViewModelType={x:Type aviavms:FlightDetailViewModel}}"
              x:Class="AviaExplorer.Views.Pages.FlightDetailPage">
     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Vertical">
@@ -24,11 +23,11 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding CurrentDirection.CombinedName}" HorizontalOptions="Start"
-                                    TextColor="Black" LineBreakMode="WordWrap" FontSize="Header"/>
+                                <material:MaterialLabel Text="{Binding CurrentDirection.CombinedName}" HorizontalOptions="Start"
+                                    TextColor="Black" LineBreakMode="WordWrap" FontSize="Body"/>
                                 <material:MaterialLabel Grid.Row="1"
                                     Text="{Binding CurrentDirection.CombinedIATA}" TextColor="Gray"/>
-                                <Label Grid.Column="2" HorizontalOptions="End"
+                                <material:MaterialLabel Grid.Column="2" HorizontalOptions="End"
                                     Text="{Binding CurrentDirection.DestinationCountry}" TextColor="OrangeRed"/>
                             </Grid>
                         </material:MaterialCard>
@@ -36,7 +35,23 @@
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:FlightModel">
-                        
+                        <ContentView Padding="10,15">
+                            <Grid ColumnSpacing="0" RowSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <material:MaterialLabel FontSize="Caption" Text="{Binding DepartureDate}"/>
+                                <material:MaterialLabel Grid.Row="1"
+                                    Text="{Binding ReturnDate}"/>
+                                <material:MaterialLabel Grid.Column="1" HorizontalOptions="End"
+                                    Text="{Binding Price}"/>
+                            </Grid>
+                        </ContentView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

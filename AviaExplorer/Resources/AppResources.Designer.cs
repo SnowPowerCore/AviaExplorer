@@ -97,6 +97,15 @@ namespace AviaExplorer.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Select the flight.
+        /// </summary>
+        internal static string flightsPageTitle {
+            get {
+                return ResourceManager.GetString("flightsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Select origin airport.
         /// </summary>
         internal static string originSelectionPageTitle {

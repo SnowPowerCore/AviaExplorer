@@ -33,20 +33,20 @@
                             Source={x:Reference directions},
                             Path=BindingContext.NavigateAirportCommand}"
                             xe:Commands.TapParameter="{Binding DestinationName}">
-                            <Grid>
+                            <Grid ColumnSpacing="0" RowSpacing="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="25"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding CombinedName}" HorizontalOptions="Start"
-                                    TextColor="Black" LineBreakMode="WordWrap"/>
+                                <material:MaterialLabel Text="{Binding CombinedName}"
+                                    LineBreakMode="TailTruncation" TextColor="Black"/>
                                 <material:MaterialLabel Grid.Row="1"
                                     Text="{Binding CombinedIATA}" TextColor="Gray"/>
-                                <Label Grid.Column="2" HorizontalOptions="End"
+                                <material:MaterialLabel Grid.Column="1" HorizontalTextAlignment="End"
                                     Text="{Binding DestinationCountry}" TextColor="OrangeRed"/>
                             </Grid>
                         </ContentView>

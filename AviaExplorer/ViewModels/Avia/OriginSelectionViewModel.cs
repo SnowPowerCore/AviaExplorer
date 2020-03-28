@@ -1,5 +1,6 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using AviaExplorer.Models.Avia;
+using AviaExplorer.Models.Utils;
 using AviaExplorer.Services.Avia.AviaInfo;
 using AviaExplorer.Services.Interfaces;
 using AviaExplorer.Services.Utils.Analytics;
@@ -8,6 +9,7 @@ using AviaExplorer.Services.Utils.Navigation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -26,7 +28,7 @@ namespace AviaExplorer.ViewModels.Avia
 
         private string _originIATA = "TOF";
         private AirportChoice[] _choices;
-        private List<AirportChoice> _availableChoices;
+        private ObservableRangeCollection<AirportChoice> _availableChoices;
         private bool _choicesUpdating;
         #endregion
 
@@ -51,7 +53,7 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
-        public List<AirportChoice> AvailableChoices
+        public ObservableRangeCollection<AirportChoice> AvailableChoices
         {
             get => _availableChoices;
             set
@@ -85,11 +87,20 @@ namespace AviaExplorer.ViewModels.Avia
         public IAsyncCommand<AirportChoice> NavigateToFlightsCommand =>
             new AsyncCommand<AirportChoice>(NavigateToFlightsAsync);
 
+        public ICommand FindAndNavigateCommand =>
+            new Command(FindAndNavigate);
+
+        public ICommand SetOriginIATACommand =>
+            new Command<string>(iata => OriginIATA = iata);
+
         public ICommand ClearChoicesCommand =>
             new Command(ClearChoices);
 
         public ICommand FilterOriginCommand =>
             new Command<string>(FilterOrigin);
+
+        public ICommand HideKeyboardCommand =>
+            new Command(() => _keyboard.HideKeyboard());
         #endregion
 
         #region Constructor
@@ -113,23 +124,27 @@ namespace AviaExplorer.ViewModels.Avia
         private void FilterOrigin(string text)
         {
             var filterData = text;
+            AvailableChoices.Clear();
             FilterOriginCommand?.CanExecute(false);
             if (string.IsNullOrEmpty(filterData))
             {
-                AvailableChoices = Choices.ToList();
+                AvailableChoices.AddRange(Choices);
                 FilterOriginCommand?.CanExecute(true);
                 return;
             }
-            AvailableChoices = Choices
-                .Where(x => x.Name.StartsWith(filterData.ToUpper()))
-                .ToList();
+            AvailableChoices.AddRange(Choices.Where(x => x.Name.StartsWith(text)));
             FilterOriginCommand?.CanExecute(true);
+        }
+
+        private void FindAndNavigate()
+        {
+            if (string.IsNullOrEmpty(OriginIATA)) return;
+            var item = Choices.FirstOrDefault(x => x.Name.StartsWith(OriginIATA));
+            NavigateToFlightsCommand?.Execute(item);
         }
 
         private Task GetChoicesAsync()
         {
-            _keyboard.HideKeyboard();
-
             if (string.IsNullOrEmpty(OriginIATA)) return Task.CompletedTask;
 
             return _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
@@ -147,7 +162,7 @@ namespace AviaExplorer.ViewModels.Avia
                         .Distinct()
                         .OrderBy(x => x.Name)
                         .ToArray();
-                    AvailableChoices = Choices.ToList();
+                    AvailableChoices = new ObservableRangeCollection<AirportChoice>(Choices);
                     ChoicesUpdating = false;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
@@ -155,13 +170,12 @@ namespace AviaExplorer.ViewModels.Avia
         private void ClearChoices()
         {
             AvailableChoices.Clear();
-            AvailableChoices = new List<AirportChoice>();
+            AvailableChoices = new ObservableRangeCollection<AirportChoice>();
         }
 
         private Task NavigateToFlightsAsync(AirportChoice origin)
         {
-            _keyboard.HideKeyboard();
-
+            if (origin is null) return Task.CompletedTask;
             var data = Uri.EscapeDataString(JsonConvert.SerializeObject(origin));
             return _navigation.NavigateToPageAsync($"directions?data={data}", false);
         }
