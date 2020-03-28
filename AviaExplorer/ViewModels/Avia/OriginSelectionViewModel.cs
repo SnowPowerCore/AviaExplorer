@@ -15,6 +15,9 @@ using Xamarin.Forms;
 
 namespace AviaExplorer.ViewModels.Avia
 {
+    /// <summary>
+    /// Handles origin IATA selection
+    /// </summary>
     public class OriginSelectionViewModel : BaseViewModel
     {
         #region Fields
@@ -32,6 +35,9 @@ namespace AviaExplorer.ViewModels.Avia
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Entered origin IATA code
+        /// </summary>
         public string OriginIATA
         {
             get => _originIATA;
@@ -42,6 +48,9 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Back property: used for storing all choices
+        /// </summary>
         public AirportChoice[] Choices
         {
             get => _choices;
@@ -52,6 +61,9 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Choices which are displayed to the user
+        /// </summary>
         public ObservableRangeCollection<AirportChoice> AvailableChoices
         {
             get => _availableChoices;
@@ -62,6 +74,9 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Flag determines updating state
+        /// </summary>
         public bool ChoicesUpdating
         {
             get => _choicesUpdating;
@@ -74,6 +89,9 @@ namespace AviaExplorer.ViewModels.Avia
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Fetches choices
+        /// </summary>
         public IAsyncCommand GetChoicesCommand =>
             new AsyncCommand(GetChoicesAsync,
                 _ => !ChoicesUpdating,
@@ -83,26 +101,37 @@ namespace AviaExplorer.ViewModels.Avia
                     _analytics.TrackError(e);
                 });
 
+        /// <summary>
+        /// Navigates to the next page
+        /// </summary>
         public IAsyncCommand<AirportChoice> NavigateToFlightsCommand =>
             new AsyncCommand<AirportChoice>(NavigateToFlightsAsync);
 
+        /// <summary>
+        /// Finds the first choice and navigates to the next page
+        /// </summary>
         public ICommand FindAndNavigateCommand =>
             new Command(FindAndNavigate);
 
-        public ICommand SetOriginIATACommand =>
-            new Command<string>(iata => OriginIATA = iata);
-
+        /// <summary>
+        /// Clears choices for recycling event
+        /// </summary>
         public ICommand ClearChoicesCommand =>
             new Command(ClearChoices);
 
+        /// <summary>
+        /// Filters choices as the user continues to input
+        /// </summary>
         public ICommand FilterOriginCommand =>
             new Command<string>(FilterOrigin);
 
+        /// <summary>
+        /// Hides keyboard when navigated
+        /// </summary>
         public ICommand HideKeyboardCommand =>
             new Command(() => _keyboard.HideKeyboard());
         #endregion
 
-        #region Constructor
         public OriginSelectionViewModel(IAviaInfoService aviaInfo,
                                         IKeyboard keyboard,
                                         IAnalyticsService analytics,
@@ -117,7 +146,6 @@ namespace AviaExplorer.ViewModels.Avia
 
             GetChoicesCommand?.Execute(null);
         }
-        #endregion
 
         #region Methods
         private void FilterOrigin(string text)

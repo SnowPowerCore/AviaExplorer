@@ -14,6 +14,7 @@ namespace AviaExplorer.ViewModels.Avia
 {
     public class FlightDetailViewModel : BaseViewModel
     {
+        #region Fields
         private readonly IAviaInfoService _aviaInfo;
         private readonly IAnalyticsService _analytics;
         private readonly ILanguageService _language;
@@ -22,7 +23,12 @@ namespace AviaExplorer.ViewModels.Avia
         private ObservableRangeCollection<FlightModel> _flights =
             new ObservableRangeCollection<FlightModel>();
         private bool _flightsUpdating;
+        #endregion
 
+        #region Properties
+        /// <summary>
+        /// Current chosen direction
+        /// </summary>
         public DirectionModel CurrentDirection
         {
             get => _currentDirection;
@@ -33,6 +39,9 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Flights available
+        /// </summary>
         public ObservableRangeCollection<FlightModel> Flights
         {
             get => _flights;
@@ -43,6 +52,9 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Flag determines updating state
+        /// </summary>
         public bool FlightsUpdating
         {
             get => _flightsUpdating;
@@ -52,7 +64,12 @@ namespace AviaExplorer.ViewModels.Avia
                 OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region Commands
+        /// <summary>
+        /// Fetches flights
+        /// </summary>
         public IAsyncCommand GetFlightsDataCommand =>
             new AsyncCommand(GetFlightsDataAsync,
                 _ => !FlightsUpdating,
@@ -62,8 +79,12 @@ namespace AviaExplorer.ViewModels.Avia
                     _analytics.TrackError(e);
                 });
 
+        /// <summary>
+        /// Sets chosen direction
+        /// </summary>
         public ICommand SetDirectionCommand =>
             new Command<DirectionModel>(direction => CurrentDirection = direction);
+        #endregion
 
         public FlightDetailViewModel(IAviaInfoService aviaInfo,
                                      IAnalyticsService analytics,
@@ -74,6 +95,7 @@ namespace AviaExplorer.ViewModels.Avia
             _language = language;
         }
 
+        #region Methods
         private Task GetFlightsDataAsync()
         {
             if (CurrentDirection is null) return Task.CompletedTask;
@@ -96,5 +118,6 @@ namespace AviaExplorer.ViewModels.Avia
                         FlightsUpdating = false;
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
+        #endregion
     }
 }

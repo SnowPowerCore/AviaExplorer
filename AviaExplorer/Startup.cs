@@ -16,8 +16,16 @@ using Xamarin.Forms;
 
 namespace AviaExplorer
 {
+    /// <summary>
+    /// We create application and all deps throughout this class
+    /// </summary>
     public static class Startup
     {
+        /// <summary>
+        /// Use this method to initialize application
+        /// </summary>
+        /// <param name="nativeConfigureServices">Native services' configure callback</param>
+        /// <returns>Application</returns>
         public static App Init(Action<IServiceCollection> nativeConfigureServices)
         {
             var host = new HostBuilder()
@@ -41,6 +49,10 @@ namespace AviaExplorer
             return App.Services.GetService<App>();
         }
 
+        /// <summary>
+        /// Crossplatform services configuration
+        /// </summary>
+        /// <param name="services">Services collection</param>
         private static void ConfigureServices(IServiceCollection services)
         {
             #region Services
@@ -86,6 +98,11 @@ namespace AviaExplorer
 
     static class StartupExtensions
     {
+        /// <summary>
+        /// Registers routes for shell navigation
+        /// </summary>
+        /// <param name="host">Host abstraction</param>
+        /// <returns>Host abstraction</returns>
         public static IHostBuilder RegisterRoutes(this IHostBuilder host)
         {
             Routing.RegisterRoute("directions", typeof(DirectionsPage));

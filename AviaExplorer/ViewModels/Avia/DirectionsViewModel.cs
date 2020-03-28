@@ -31,6 +31,9 @@ namespace AviaExplorer.ViewModels.Avia
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Directions available
+        /// </summary>
         public ObservableRangeCollection<DirectionModel> Directions
         {
             get => _directions;
@@ -41,6 +44,9 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Map pins
+        /// </summary>
         public List<DirectionModel> Pins
         {
             get => _pins;
@@ -51,8 +57,14 @@ namespace AviaExplorer.ViewModels.Avia
             }
         }
 
+        /// <summary>
+        /// Current chosen airport choice
+        /// </summary>
         private AirportChoice OriginAirport { get; set; }
 
+        /// <summary>
+        /// Flag determines updating state
+        /// </summary>
         public bool DirectionsUpdating
         {
             get => _directionsUpdating;
@@ -65,6 +77,9 @@ namespace AviaExplorer.ViewModels.Avia
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Fetches supported directions
+        /// </summary>
         public IAsyncCommand GetSupportedDirectionsCommand =>
             new AsyncCommand(GetSupportedDirectionsAsync,
                 _ => !DirectionsUpdating,
@@ -74,17 +89,25 @@ namespace AviaExplorer.ViewModels.Avia
                     _analytics.TrackError(e);
                 });
 
+        /// <summary>
+        /// Navigates to the next page
+        /// </summary>
         public IAsyncCommand<string> NavigateAirportCommand =>
             new AsyncCommand<string>(NavigateAirportAsync);
 
+        /// <summary>
+        /// Clears supported directions for recycling event
+        /// </summary>
         public ICommand ClearSupportedDirectionsCommand =>
             new Command(ClearSupportedDirections);
 
+        /// <summary>
+        /// Sets chosen airport choice
+        /// </summary>
         public ICommand SetOriginAirportCommand =>
             new Command<AirportChoice>(iata => OriginAirport = iata);
         #endregion
 
-        #region Constructor
         public DirectionsViewModel(IAviaInfoService aviaInfo,
                                    IAnalyticsService analytics,
                                    ILanguageService language,
@@ -95,7 +118,6 @@ namespace AviaExplorer.ViewModels.Avia
             _language = language;
             _navigation = navigation;
         }
-        #endregion
 
         #region Methods
         private Task GetSupportedDirectionsAsync()
