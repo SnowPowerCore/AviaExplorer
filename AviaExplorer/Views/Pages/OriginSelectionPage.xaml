@@ -17,9 +17,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
-                        BackgroundColor="Transparent" InputType="Plain" IsAutoCapitalizationEnabled="True"
-                        Placeholder="{helpers:Translate enterIATA}" MaxLength="32"
-                        Text="{Binding OriginIATA, Mode=TwoWay}" IsMaxLengthCounterVisible="False"
+                        BackgroundColor="Transparent" InputType="Plain"
+                        Placeholder="{helpers:Translate enterIATA}" IsMaxLengthCounterVisible="False"
+                        Text="{Binding OriginIATA, Mode=TwoWay}" IsAutoCapitalizationEnabled="True"
+                        Unfocused="MaterialTextField_Unfocused" MaxLength="32"
                         TextChangeCommand="{Binding FilterOriginCommand, Mode=OneWay}"
                         ReturnType="Search" ReturnCommand="{Binding FindAndNavigateCommand}">
             <material:MaterialTextField.LeadingIcon>

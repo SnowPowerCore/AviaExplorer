@@ -16,5 +16,8 @@ namespace AviaExplorer.Views.Pages
 
             OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null);
         }
+
+        private void MaterialTextField_Unfocused(object sender, Xamarin.Forms.FocusEventArgs e) =>
+            OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null);
     }
 }
