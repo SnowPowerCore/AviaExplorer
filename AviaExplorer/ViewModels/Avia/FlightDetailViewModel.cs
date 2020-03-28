@@ -110,13 +110,13 @@ namespace AviaExplorer.ViewModels.Avia
                 .ConfigureAwait(false);
 
             Flights.AddRange(result
-                            .Where(x => x.Actual && x.Destination == CurrentDirection.DestinationIATA)
-                            .Select(x => new FlightModel
-                            {
-                                DepartureDate = DateTime.Parse(x.DepartDate),
-                                ReturnDate = DateTime.Parse(x.ReturnDate),
-                                Price = x.FlightPrice
-                            }));
+                .Where(x => x.Actual && x.Destination == CurrentDirection.DestinationIATA)
+                .Select(x => new FlightModel
+                {
+                    DepartureDate = DateTime.Parse(x.DepartDate),
+                    ReturnDate = DateTime.Parse(x.ReturnDate),
+                    Price = x.FlightPrice
+                }));
 
             FlightsUpdating = false;
         }
