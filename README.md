@@ -40,5 +40,5 @@ Connected libraries:
 This application is intended for **testing** purposes only. Thanks to every developer, who made those awesome libraries which anyone can use.
 
 ### Issues & notes
-- Unfortunately, API for tickets' prices always returns empty array.
+- Unfortunately, API for tickets' prices always returns empty array. [Try](http://map.aviasales.ru/prices.json?origin_iata=LED&period=2014-12-01:season&direct=true&one_way=false&price=50000&no_visa=true&schengen=true&need_visa=true&locale=ru&min_trip_duration_in_days=13&max_trip_duration_in_days=15).
 - Data for CollectionViews population was limited to 25 items due to the testing nature. Real life projects would implement [this](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview/populate-data#load-data-incrementally).
