@@ -1,16 +1,16 @@
 # Avia Explorer
 Open application for tracking avia prices.
 
-[TOC]
-
 ### Screenshots
-![](https://db3pap005files.storage.live.com/y4pV4wv303ppimA8Cf7TTsdsrCvCO-9OYdRqETzXm5eO1iF7pYFDXI9EPoq9-clKwqwtLYDSG81XPlE8qRfjSHt3K0Iz0LQKGbKSlBX0YtdA430I3hnHrgibBSPTMVoPcq1-uUQNwJvXU6kzZK_GUyrs4c4s1djWkAlHnR0_iQ1PPfejy1ZAX6pEsfvwvm82gdN/Android1.png?psid=1&width=204&height=446)
+
+![](https://imgshare.io/images/2020/03/28/Android1.png)
+
 > Android origin airport selection.
 
-![](https://db3pap005files.storage.live.com/y4ppy-PbiJN90GvMvL5U-X7I91w1lnqVT-tBYJl6mqFTnIE5EvUAjZPAJsLytx6QGzgfepy1RIaKxqmPs-HVDP1qgU4MPIFfu4bseFelQWrO4X2tfvN2ri5wXUK6jKlAocac4ooYfg_T81J2dL40YeVfncFVkswkKl870HArNPW9LyeG5aIqqxtzQJQXu6jobiM/Android2.png?psid=1&width=204&height=446)
+![](https://imgshare.io/images/2020/03/28/Android2.png)
 > Android destination airport selection (via map pins, or within the list).
 
-![](https://db3pap005files.storage.live.com/y4pnz0n745gY6wPpBKju_SSv7Ta0TQTeGabebtQIpgwMn4klnyZp3_Nd8TPZ3N2h5oZOIHAhAWOixblnEF-Cp5u8bAkDtxOLSCk5hO5ZnRryhQfCT20CnSI7F4p17aqUEqbHrlwy1SjEHOkCTm3g7XRhQy18_WkRVXygUL7AfzAZ08v235mytr2wIQdPsqWwxvS/Android3.png?psid=1&width=204&height=446)
+![](https://imgshare.io/images/2020/03/28/Android3.png)
 > Android flights screen (unfortunately, API returns empty array).
 
 ### Description
