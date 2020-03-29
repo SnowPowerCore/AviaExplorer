@@ -106,13 +106,15 @@ namespace AviaExplorer.ViewModels.Avia
                 {
                     ChoicesUpdating = false;
                     _analytics.TrackError(e);
-                }));
+                },
+                continueOnCapturedContext: true));
 
         /// <summary>
         /// Navigates to the next page
         /// </summary>
         public IAsyncCommand<AirportChoice> NavigateToFlightsCommand => _navigateToFlightsCommand 
-            ?? (_navigateToFlightsCommand = new AsyncCommand<AirportChoice>(NavigateToFlightsAsync));
+            ?? (_navigateToFlightsCommand = new AsyncCommand<AirportChoice>(NavigateToFlightsAsync,
+                    continueOnCapturedContext: true));
 
         /// <summary>
         /// Finds the first choice and navigates to the next page

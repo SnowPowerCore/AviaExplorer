@@ -80,7 +80,8 @@ namespace AviaExplorer.ViewModels.Avia
                 {
                     FlightsUpdating = false;
                     _analytics.TrackError(e);
-                }));
+                },
+                continueOnCapturedContext: true));
 
         /// <summary>
         /// Sets chosen direction

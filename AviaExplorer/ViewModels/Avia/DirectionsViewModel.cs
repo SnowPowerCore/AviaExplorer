@@ -92,13 +92,15 @@ namespace AviaExplorer.ViewModels.Avia
                 {
                     DirectionsUpdating = false;
                     _analytics.TrackError(e);
-                }));
+                },
+                continueOnCapturedContext: true));
 
         /// <summary>
         /// Navigates to the next page
         /// </summary>
         public IAsyncCommand<string> NavigateAirportCommand => _navigateAirportCommand
-            ?? (_navigateAirportCommand = new AsyncCommand<string>(NavigateAirportAsync));
+            ?? (_navigateAirportCommand = new AsyncCommand<string>(NavigateAirportAsync,
+                    continueOnCapturedContext: true));
 
         /// <summary>
         /// Clears supported directions for recycling event
