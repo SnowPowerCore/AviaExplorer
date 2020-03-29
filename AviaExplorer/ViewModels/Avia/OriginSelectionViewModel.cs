@@ -194,6 +194,7 @@ namespace AviaExplorer.ViewModels.Avia
                         x.Coordinates.LastOrDefault(),
                         x.Coordinates.FirstOrDefault())
                 })
+                .Take(25)
                 .Distinct()
                 .OrderBy(x => x.Name)
                 .ToArray();

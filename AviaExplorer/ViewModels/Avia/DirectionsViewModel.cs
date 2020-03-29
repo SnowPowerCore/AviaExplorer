@@ -145,7 +145,8 @@ namespace AviaExplorer.ViewModels.Avia
                     GeoPosition = new Position(
                         x.Coordinates.LastOrDefault(),
                         x.Coordinates.FirstOrDefault())
-                }));
+                })
+                .Take(25));
             Pins = Directions.ToList();
 
             DirectionsUpdating = false;
