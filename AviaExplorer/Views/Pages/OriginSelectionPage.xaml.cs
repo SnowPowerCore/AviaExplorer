@@ -15,8 +15,7 @@ namespace AviaExplorer.Views.Pages
         {
             base.OnDisappearing();
 
-            Device.InvokeOnMainThreadAsync(() =>
-                OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null));
+            OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null);
         }
 
         private void MaterialTextField_Unfocused(object sender, FocusEventArgs e) =>
