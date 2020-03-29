@@ -26,8 +26,11 @@ namespace AviaExplorer.Views.Pages
         {
             base.OnAppearing();
 
-            FlightDetailViewModel?.SetDirectionCommand?.Execute(_direction);
-            FlightDetailViewModel?.GetFlightsDataCommand?.Execute(null);
+            Device.InvokeOnMainThreadAsync(() =>
+            {
+                FlightDetailViewModel?.SetDirectionCommand?.Execute(_direction);
+                FlightDetailViewModel?.GetFlightsDataCommand?.Execute(null);
+            });
         }
     }
 }

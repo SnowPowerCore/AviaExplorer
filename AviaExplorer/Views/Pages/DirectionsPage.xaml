@@ -21,8 +21,8 @@
             BackgroundColor="Transparent">
             <maps:Map.ItemTemplate>
                 <DataTemplate x:DataType="models:DirectionModel">
-                    <maps:Pin Position="{Binding GeoPosition}"
-                        Label="{Binding DestinationName}"
+                    <maps:Pin Position="{Binding GeoPosition, Mode=OneTime}"
+                        Label="{Binding DestinationName, Mode=OneTime}"
                         MarkerClicked="Pin_MarkerClicked"/>
                 </DataTemplate>
             </maps:Map.ItemTemplate>
@@ -47,12 +47,13 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <material:MaterialLabel Text="{Binding CombinedName}"
+                                <material:MaterialLabel Text="{Binding CombinedName, Mode=OneTime}"
                                     LineBreakMode="TailTruncation" TextColor="Black"/>
                                 <material:MaterialLabel Grid.Row="1"
-                                    Text="{Binding CombinedIATA}" TextColor="Gray"/>
+                                    Text="{Binding CombinedIATA, Mode=OneTime}" TextColor="Gray"/>
                                 <material:MaterialLabel Grid.Column="1" HorizontalTextAlignment="End"
-                                    Text="{Binding DestinationCountry}" TextColor="OrangeRed"/>
+                                    Text="{Binding DestinationCountry, Mode=OneTime}"
+                                    TextColor="OrangeRed"/>
                             </Grid>
                         </ContentView>
                     </DataTemplate>

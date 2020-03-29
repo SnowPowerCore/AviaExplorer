@@ -1,4 +1,5 @@
 ﻿using AviaExplorer.ViewModels.Avia;
+using Xamarin.Forms;
 
 namespace AviaExplorer.Views.Pages
 {
@@ -14,10 +15,11 @@ namespace AviaExplorer.Views.Pages
         {
             base.OnDisappearing();
 
-            OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null);
+            Device.InvokeOnMainThreadAsync(() =>
+                OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null));
         }
 
-        private void MaterialTextField_Unfocused(object sender, Xamarin.Forms.FocusEventArgs e) =>
+        private void MaterialTextField_Unfocused(object sender, FocusEventArgs e) =>
             OriginSelectionViewModel?.HideKeyboardCommand?.Execute(null);
     }
 }

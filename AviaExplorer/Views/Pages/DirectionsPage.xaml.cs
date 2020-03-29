@@ -27,17 +27,21 @@ namespace AviaExplorer.Views.Pages
         {
             base.OnAppearing();
 
-            FlightsViewModel?.SetOriginAirportCommand?.Execute(_airport);
-            FlightsViewModel?.GetSupportedDirectionsCommand?.Execute(null);
+            Device.InvokeOnMainThreadAsync(() =>
+            {
+                FlightsViewModel?.SetOriginAirportCommand?.Execute(_airport);
+                FlightsViewModel?.GetSupportedDirectionsCommand?.Execute(null);
 
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(_airport.GeoPosition, new Distance(2400)));
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(_airport.GeoPosition, new Distance(2400)));
+            });
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
 
-            FlightsViewModel?.ClearSupportedDirectionsCommand?.Execute(null);
+            Device.InvokeOnMainThreadAsync(() =>
+                FlightsViewModel?.ClearSupportedDirectionsCommand?.Execute(null));
         }
 
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)

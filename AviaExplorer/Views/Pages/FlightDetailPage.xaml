@@ -16,19 +16,22 @@
                         <material:MaterialCard Padding="10" Elevation="8">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="25"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <material:MaterialLabel Text="{Binding CurrentDirection.CombinedName}" HorizontalOptions="Start"
-                                    TextColor="Black" LineBreakMode="WordWrap" FontSize="Body"/>
+                                <material:MaterialLabel
+                                    Text="{Binding CurrentDirection.CombinedName, Mode=OneTime}"
+                                    TextColor="Black"/>
                                 <material:MaterialLabel Grid.Row="1"
-                                    Text="{Binding CurrentDirection.CombinedIATA}" TextColor="Gray"/>
-                                <material:MaterialLabel Grid.Column="2" HorizontalOptions="End"
-                                    Text="{Binding CurrentDirection.DestinationCountry}" TextColor="OrangeRed"/>
+                                    Text="{Binding CurrentDirection.CombinedIATA, Mode=OneTime}"
+                                    TextColor="Gray"/>
+                                <material:MaterialLabel Grid.Column="1" HorizontalOptions="End"
+                                    Text="{Binding CurrentDirection.DestinationCountry, Mode=OneTime}"
+                                    TextColor="OrangeRed"/>
                             </Grid>
                         </material:MaterialCard>
                     </ContentView>
@@ -45,11 +48,13 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <material:MaterialLabel FontSize="Caption" Text="{Binding DepartureDate}"/>
-                                <material:MaterialLabel Grid.Row="1"
-                                    Text="{Binding ReturnDate}"/>
+                                <material:MaterialLabel FontSize="Caption" LineBreakMode="TailTruncation"
+                                    Text="{Binding DepartureDate, Mode=OneTime}"/>
+                                <material:MaterialLabel FontSize="Caption" Grid.Row="1"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding ReturnDate, Mode=OneTime}"/>
                                 <material:MaterialLabel Grid.Column="1" HorizontalOptions="End"
-                                    Text="{Binding Price}"/>
+                                    Text="{Binding Price, Mode=OneTime}"/>
                             </Grid>
                         </ContentView>
                     </DataTemplate>
