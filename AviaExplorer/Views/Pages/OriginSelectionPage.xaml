@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <material:MaterialTextField IsSpellCheckEnabled="False" IsTextAllCaps="True"
             BackgroundColor="Transparent" InputType="Plain"
-            Placeholder="{helpers:Translate enterIATA}" IsMaxLengthCounterVisible="True"
+            Placeholder="{helpers:Translate enterIATA}" IsMaxLengthCounterVisible="False"
             Text="{Binding OriginIATA, Mode=TwoWay}" FloatingPlaceholderEnabled="True"
             Unfocused="MaterialTextField_Unfocused" MaxLength="32"
             TextChangeCommand="{Binding FilterOriginCommand, Mode=OneWay}"

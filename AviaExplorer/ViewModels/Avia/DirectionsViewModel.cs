@@ -92,15 +92,13 @@ namespace AviaExplorer.ViewModels.Avia
                 {
                     DirectionsUpdating = false;
                     _analytics.TrackError(e);
-                },
-                continueOnCapturedContext: true));
+                }));
 
         /// <summary>
         /// Navigates to the next page
         /// </summary>
         public IAsyncCommand<string> NavigateAirportCommand => _navigateAirportCommand
-            ?? (_navigateAirportCommand = new AsyncCommand<string>(NavigateAirportAsync,
-                    continueOnCapturedContext: true));
+            ?? (_navigateAirportCommand = new AsyncCommand<string>(NavigateAirportAsync));
 
         /// <summary>
         /// Clears supported directions for recycling event
@@ -136,20 +134,24 @@ namespace AviaExplorer.ViewModels.Avia
             var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginAirport.Name, true, _language.Current)
                 .ConfigureAwait(false);
 
-            Directions.AddRange(result.Directions
-                .Select(x => new DirectionModel
-                {
-                    OriginIATA = result.Origin.IATA,
-                    DestinationIATA = x.IATA,
-                    OriginName = result.Origin.Name,
-                    DestinationName = x.Name,
-                    DestinationCountry = x.Country,
-                    GeoPosition = new Position(
-                        x.Coordinates.LastOrDefault(),
-                        x.Coordinates.FirstOrDefault())
-                })
-                .Take(25));
-            Pins = Directions.ToList();
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                Directions.AddRange(result.Directions
+                    .Select(x => new DirectionModel
+                    {
+                        OriginIATA = result.Origin.IATA,
+                        DestinationIATA = x.IATA,
+                        OriginName = result.Origin.Name,
+                        DestinationName = x.Name,
+                        DestinationCountry = x.Country,
+                        GeoPosition = new Position(
+                            x.Coordinates.LastOrDefault(),
+                            x.Coordinates.FirstOrDefault())
+                    })
+                    .Take(25));
+
+                Pins = Directions.ToList();
+            });
 
             DirectionsUpdating = false;
         }

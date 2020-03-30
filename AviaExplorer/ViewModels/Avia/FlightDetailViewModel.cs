@@ -80,8 +80,7 @@ namespace AviaExplorer.ViewModels.Avia
                 {
                     FlightsUpdating = false;
                     _analytics.TrackError(e);
-                },
-                continueOnCapturedContext: true));
+                }));
 
         /// <summary>
         /// Sets chosen direction
@@ -110,14 +109,15 @@ namespace AviaExplorer.ViewModels.Avia
                 "2018-12-10:season", true, "50000", true, false, false, "1", "7")
                 .ConfigureAwait(false);
 
-            Flights.AddRange(result
-                .Where(x => x.Actual && x.Destination == CurrentDirection.DestinationIATA)
-                .Select(x => new FlightModel
-                {
-                    DepartureDate = DateTime.Parse(x.DepartDate),
-                    ReturnDate = DateTime.Parse(x.ReturnDate),
-                    Price = x.FlightPrice
-                }));
+            await Device.InvokeOnMainThreadAsync(() =>
+                Flights.AddRange(result
+                    .Where(x => x.Actual && x.Destination == CurrentDirection.DestinationIATA)
+                    .Select(x => new FlightModel
+                    {
+                        DepartureDate = DateTime.Parse(x.DepartDate),
+                        ReturnDate = DateTime.Parse(x.ReturnDate),
+                        Price = x.FlightPrice
+                    })));
 
             FlightsUpdating = false;
         }

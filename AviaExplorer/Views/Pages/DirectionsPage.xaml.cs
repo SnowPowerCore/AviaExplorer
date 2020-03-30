@@ -37,8 +37,7 @@ namespace AviaExplorer.Views.Pages
         {
             base.OnDisappearing();
 
-            Device.InvokeOnMainThreadAsync(() =>
-                FlightsViewModel?.ClearSupportedDirectionsCommand?.Execute(null));
+            FlightsViewModel?.ClearSupportedDirectionsCommand?.Execute(null);
         }
 
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)

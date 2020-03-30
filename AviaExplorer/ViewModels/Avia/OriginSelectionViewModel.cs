@@ -106,15 +106,13 @@ namespace AviaExplorer.ViewModels.Avia
                 {
                     ChoicesUpdating = false;
                     _analytics.TrackError(e);
-                },
-                continueOnCapturedContext: true));
+                }));
 
         /// <summary>
         /// Navigates to the next page
         /// </summary>
         public IAsyncCommand<AirportChoice> NavigateToFlightsCommand => _navigateToFlightsCommand 
-            ?? (_navigateToFlightsCommand = new AsyncCommand<AirportChoice>(NavigateToFlightsAsync,
-                    continueOnCapturedContext: true));
+            ?? (_navigateToFlightsCommand = new AsyncCommand<AirportChoice>(NavigateToFlightsAsync));
 
         /// <summary>
         /// Finds the first choice and navigates to the next page
@@ -188,19 +186,23 @@ namespace AviaExplorer.ViewModels.Avia
             var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
                 .ConfigureAwait(false);
 
-            Choices = result.Directions
-                .Select(x => new AirportChoice
-                {
-                    Name = x.IATA,
-                    GeoPosition = new Xamarin.Forms.Maps.Position(
-                        x.Coordinates.LastOrDefault(),
-                        x.Coordinates.FirstOrDefault())
-                })
-                .Take(25)
-                .Distinct()
-                .OrderBy(x => x.Name)
-                .ToArray();
-            AvailableChoices.AddRange(Choices);
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                Choices = result.Directions
+                    .Select(x => new AirportChoice
+                    {
+                        Name = x.IATA,
+                        GeoPosition = new Xamarin.Forms.Maps.Position(
+                            x.Coordinates.LastOrDefault(),
+                            x.Coordinates.FirstOrDefault())
+                    })
+                    .Take(25)
+                    .Distinct()
+                    .OrderBy(x => x.Name)
+                    .ToArray();
+
+                AvailableChoices.AddRange(Choices);
+            });
 
             ChoicesUpdating = false;
         }
