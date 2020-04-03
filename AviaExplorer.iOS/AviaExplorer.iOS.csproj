@@ -29,8 +29,7 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchSdkVersion>12.0</MtouchSdkVersion>
     <CodesignKey>iPhone Distribution</CodesignKey>
-    <CodesignProvision>
-    </CodesignProvision>
+    <CodesignProvision>AviaDistribution</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
