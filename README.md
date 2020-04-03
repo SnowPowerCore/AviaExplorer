@@ -1,6 +1,8 @@
 # Avia Explorer
 Open application for tracking avia prices.
 
+[![Build Status](https://dev.azure.com/Wonder-Inc/AviaExplorer/_apis/build/status/SnowPowerCore.AviaExplorer?branchName=master)](https://dev.azure.com/Wonder-Inc/AviaExplorer/_build/latest?definitionId=1&branchName=master)
+
 ### Screenshots
 
 ![](https://imgshare.io/images/2020/03/28/Android1.png)
@@ -37,7 +39,7 @@ Connected libraries:
 - **XF.Material** (for Material Design controls)
 
 ### Support
-This application is intended for **testing** purposes only. Thanks to every developer, who made those awesome libraries which anyone can use.
+This application is intended for **testing** purposes only. Thanks to every developer, who made those awesome libraries anyone can use.
 
 ### Issues & notes
 - Unfortunately, API for tickets' prices always returns empty array. [Try](http://map.aviasales.ru/prices.json?origin_iata=LED&period=2014-12-01:season&direct=true&one_way=false&price=50000&no_visa=true&schengen=true&need_visa=true&locale=ru&min_trip_duration_in_days=13&max_trip_duration_in_days=15).
