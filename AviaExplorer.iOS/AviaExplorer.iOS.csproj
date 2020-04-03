@@ -64,9 +64,10 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignKey>iPhone Distribution: Astarus OOO (W9V799B7LG)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>AviaDistribution</CodesignProvision>
+    <CodesignProvision>AviaAppStoreDistribution</CodesignProvision>
     <BuildIpa>true</BuildIpa>
     <OptimizePNGs>true</OptimizePNGs>
+    <MtouchExtraArgs>--optimize=experimental-xforms-product-type</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
