@@ -60,9 +60,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Distribution: Astarus OOO (W9V799B7LG)</CodesignKey>
+    <CodesignKey>Apple Development: Nikita Ponomarenko (59RV7W7VNB)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>iOS Distribution: Astarus OOO</CodesignProvision>
+    <CodesignProvision>VS: WildCard Development</CodesignProvision>
     <BuildIpa>true</BuildIpa>
     <OptimizePNGs>true</OptimizePNGs>
   </PropertyGroup>
