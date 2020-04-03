@@ -30,17 +30,17 @@
 	<key>CFBundleDisplayName</key>
 	<string>Avia Explorer</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.TestCompany.AviaExplorer</string>
+	<string>com.Astarus.AviaExplorer</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>UIAppFonts</key>
-  <array>
-    <string>SegoeMDL2Assets.ttf</string>
-  </array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SegoeMDL2Assets.ttf</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>AviaExplorer</string>
 	<key>XSAppIconAssets</key>
