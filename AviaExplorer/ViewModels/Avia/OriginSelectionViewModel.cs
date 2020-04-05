@@ -8,6 +8,7 @@ using AviaExplorer.Services.Utils.Language;
 using AviaExplorer.Services.Utils.Navigation;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -35,7 +36,7 @@ namespace AviaExplorer.ViewModels.Avia
         private ICommand _hideKeyboardCommand;
 
         private string _originIATA = "TOF";
-        private AirportChoice[] _choices;
+        private List<AirportChoice> _choices = new List<AirportChoice>();
         private ObservableRangeCollection<AirportChoice> _availableChoices = 
             new ObservableRangeCollection<AirportChoice>();
         private bool _choicesUpdating;
@@ -58,7 +59,7 @@ namespace AviaExplorer.ViewModels.Avia
         /// <summary>
         /// Back property: used for storing all choices
         /// </summary>
-        public AirportChoice[] Choices
+        public List<AirportChoice> Choices
         {
             get => _choices;
             set
@@ -199,7 +200,7 @@ namespace AviaExplorer.ViewModels.Avia
                     .Take(25)
                     .Distinct()
                     .OrderBy(x => x.Name)
-                    .ToArray();
+                    .ToList();
 
                 AvailableChoices.AddRange(Choices);
             });
