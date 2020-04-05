@@ -182,15 +182,15 @@ namespace AviaExplorer.ViewModels.Avia
         {
             if (string.IsNullOrEmpty(OriginIATA)) return;
 
-            Choices.Clear();
             AvailableChoices.Clear();
+            Choices.Clear();
 
             var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
                 .ConfigureAwait(false);
 
             await Device.InvokeOnMainThreadAsync(() =>
             {
-                Choices.AddRange(result.Directions
+                Choices = result.Directions
                     .Select(x => new AirportChoice
                     {
                         Name = x.IATA,
@@ -200,7 +200,8 @@ namespace AviaExplorer.ViewModels.Avia
                     })
                     .Take(25)
                     .Distinct()
-                    .OrderBy(x => x.Name));
+                    .OrderBy(x => x.Name)
+                    .ToList();
 
                 AvailableChoices.AddRange(Choices);
             });

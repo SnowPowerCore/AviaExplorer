@@ -31,7 +31,7 @@ namespace AviaExplorer.ViewModels.Avia
 
         private ObservableRangeCollection<DirectionModel> _directions =
             new ObservableRangeCollection<DirectionModel>();
-        private List<DirectionModel> _pins;
+        private List<DirectionModel> _pins = new List<DirectionModel>();
         private bool _directionsUpdating;
         #endregion
 
@@ -129,6 +129,7 @@ namespace AviaExplorer.ViewModels.Avia
         {
             if (string.IsNullOrEmpty(OriginAirport.Name)) return;
 
+            Pins.Clear();
             Directions.Clear();
 
             var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginAirport.Name, true, _language.Current)
