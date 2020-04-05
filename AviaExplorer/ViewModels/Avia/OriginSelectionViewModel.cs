@@ -182,6 +182,7 @@ namespace AviaExplorer.ViewModels.Avia
         {
             if (string.IsNullOrEmpty(OriginIATA)) return;
 
+            Choices.Clear();
             AvailableChoices.Clear();
 
             var result = await _aviaInfo.GetSupportedDirectionsAsync(OriginIATA, true, _language.Current)
