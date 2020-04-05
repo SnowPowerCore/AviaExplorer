@@ -180,7 +180,11 @@ namespace AviaExplorer.ViewModels.Avia
 
         private async Task GetChoicesAsync()
         {
-            if (string.IsNullOrEmpty(OriginIATA)) return;
+            if (string.IsNullOrEmpty(OriginIATA))
+            {
+                ChoicesUpdating = false;
+                return;
+            }
 
             AvailableChoices.Clear();
             Choices.Clear();

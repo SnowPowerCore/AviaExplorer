@@ -101,7 +101,11 @@ namespace AviaExplorer.ViewModels.Avia
         #region Methods
         private async Task GetFlightsDataAsync()
         {
-            if (CurrentDirection is null) return;
+            if (CurrentDirection is null)
+            {
+                FlightsUpdating = false;
+                return;
+            }
 
             Flights.Clear();
 

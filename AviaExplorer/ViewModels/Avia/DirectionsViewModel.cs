@@ -127,7 +127,11 @@ namespace AviaExplorer.ViewModels.Avia
         #region Methods
         private async Task GetSupportedDirectionsAsync()
         {
-            if (string.IsNullOrEmpty(OriginAirport.Name)) return;
+            if (string.IsNullOrEmpty(OriginAirport.Name))
+            {
+                DirectionsUpdating = false;
+                return;
+            }
 
             Pins.Clear();
             Directions.Clear();
