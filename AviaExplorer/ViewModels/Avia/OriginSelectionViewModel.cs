@@ -189,7 +189,7 @@ namespace AviaExplorer.ViewModels.Avia
 
             await Device.InvokeOnMainThreadAsync(() =>
             {
-                Choices = result.Directions
+                Choices.AddRange(result.Directions
                     .Select(x => new AirportChoice
                     {
                         Name = x.IATA,
@@ -199,8 +199,7 @@ namespace AviaExplorer.ViewModels.Avia
                     })
                     .Take(25)
                     .Distinct()
-                    .OrderBy(x => x.Name)
-                    .ToList();
+                    .OrderBy(x => x.Name));
 
                 AvailableChoices.AddRange(Choices);
             });
