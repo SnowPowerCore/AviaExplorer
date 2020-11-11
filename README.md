@@ -1,14 +1,6 @@
 # Avia Explorer
 Open application for tracking avia prices.
 
-Android:
-
-[![Build Status](https://dev.azure.com/Wonder-Inc/AviaExplorer/_apis/build/status/AviaExplorer%20Android?branchName=master)](https://dev.azure.com/Wonder-Inc/AviaExplorer/_build/latest?definitionId=4&branchName=master)
-
-iOS:
-
-[![Build Status](https://dev.azure.com/Wonder-Inc/AviaExplorer/_apis/build/status/AviaExplorer%20iOS?branchName=master)](https://dev.azure.com/Wonder-Inc/AviaExplorer/_build/latest?definitionId=3&branchName=master)
-
 ### Screenshots
 
 ![](https://imgshare.io/images/2020/03/28/Android1.png)
