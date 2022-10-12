@@ -1,18 +1,6 @@
 # Avia Explorer
 Open application for tracking avia prices.
 
-### Screenshots
-
-![](https://imgshare.io/images/2020/03/28/Android1.png)
-
-> Android origin airport selection.
-
-![](https://imgshare.io/images/2020/03/28/Android2.png)
-> Android destination airport selection (via map pins, or within the list).
-
-![](https://imgshare.io/images/2020/03/28/Android3.png)
-> Android flights screen (unfortunately, API returns empty array).
-
 ### Description
 Android & iOS test application for checking flights and its prices. Made with Xamarin.Forms.
 
